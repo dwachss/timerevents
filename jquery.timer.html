@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>jQuery Timer Events</title>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="jquery.timer.js"></script>
+</head>
+
+<body>
+
+<textarea></textarea><span id=wc></span>
+<div id=interval>
+	Interval Timer
+	<input type=button value=Start /> <input type=button value=Stop />
+	<label>Duration: <input class=duration /></label>
+	<span></span>
+</div>
+<div id=timeout>
+	Timeout Timer
+	<input type=button value=Start /> <input type=button value=Stop />
+	<label>Duration: <input class=duration /></label>
+	<span></span>
+</div>
+
+<script>
+	$('textarea').on('immediate input', function(){
+		$('#wc').text (this.value.split(/\s+/).length +' words');
+	});
+	$('#interval input[value=Start]').click(function(){
+		duration = $('#interval input.duration').val();
+		if (!isNaN(parseInt(duration))) duration = parseInt(duration); 
+		$('#interval span').on('interval', {duration: duration}, function(){
+			$(this).text($(this).text()+ ' ping!');
+		});
+	});
+	$('#interval input[value=Stop]').click(function(){
+		$('#interval span').off('interval');
+	});
+	$('#timeout input[value=Start]').click(function(){
+		duration = $('#timeout input.duration').val();
+		if (!isNaN(parseInt(duration))) duration = parseInt(duration); 
+		$('#timeout span').on('timeout', {duration: duration}, function(){
+			$(this).text($(this).text()+ ' ping!');
+		});
+	});
+	$('#timeout input[value=Stop]').click(function(){
+		$('#timeout span').off('timeout');
+	});
+</script>
+</body>
+</html>
