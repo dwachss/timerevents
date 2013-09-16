@@ -6,8 +6,13 @@ jQuery event syntax for timers.
 jQuery timer events are simple syntactic sugar for using the event syntax for 
 setTimeout and setInterval functions, and running a function immediately.
 
-documentation
-=============
+Files
+-----
+jquery.timer.js: the code
+jquery.timer.html: simple demo
+
+Documentation
+-------------
 
 `immediate` event: runs the handler immediately. Use for handlers you want to run once then with events,
 like:
