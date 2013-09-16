@@ -9,6 +9,7 @@ setTimeout and setInterval functions, and running a function immediately.
 Files
 -----
 jquery.timer.js: the code
+
 jquery.timer.html: simple demo
 
 Documentation
