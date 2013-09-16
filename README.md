@@ -19,7 +19,7 @@ like:
 
 	$('textarea').on('immediate input', displaywordcount);
 
-`timeout` event: wrapper for `setTimeout`. Optional parameter: `duration`, used like jQuery's effects
+`timeout` event: wrapper for `setTimeout`. Calls the event handler once after a delay. Optional parameter: `duration`, used like jQuery's effects
 `duration`; a number represents the number of milliseconds, and `fast` and `slow` are acceptable.
 Uses `jQuery.speed()`, so if effects are off, the duration is set at zero.
 
@@ -29,7 +29,7 @@ Examples:
 	$('span').on('timeout', {duration: 100}, function() { this.innerHTML = Date() }; // shows the time in 100 ms
 	$('span').off('timeout'); // stops the timer if it hasn't run already
 
-`interval` event: wrapper for `setInterval`. Otherwise identical to `timeout`.
+`interval` event: wrapper for `setInterval`. Calls the event handler every interval. Otherwise identical to `timeout`.
 
 Examples:
 
