@@ -1,6 +1,6 @@
 // timer-related events for cleaner code
-// Version: 1.0
-// Copyright (c) 2013 Daniel Wachsstock
+// Version: 1.1.1
+// Copyright (c) 2020 Daniel Wachsstock
 // MIT license:
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -23,21 +23,13 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-// requires Array.prototype.forEach, so this lets me nice to IE8
-if ( !Array.prototype.forEach ) {
-  Array.prototype.forEach = function(fn, scope) {
-    for(var i = 0, len = this.length; i < len; ++i) {
-      fn.call(scope, this[i], i, this);
-    }
-  }
-}
-
 (function($){
 
 $.event.special.immediate = {
 	add: function (handleObj) {
-		// call the event handler immediately
-		handleObj.handler.call(this, jQuery.Event(handleObj.type, {data: handleObj.data}));
+		// call the event handler almost immediately--use a promise to put 
+		// it on the front of the task queue
+		Promise.resolve().then(handleObj.handler.bind(this, jQuery.Event(handleObj.type, {data: handleObj.data})));
 	}
 };
 
@@ -55,5 +47,11 @@ $.event.special.immediate = {
 		}
 	};
 });
+
+// timeout wrappers to create Promises.
+// Use as Promise.wait(1000).then(functionToRunAfterASecond)
+// and somePromise.then(Promise.waiter(1000)).then(functionToRunASecondAfterTheOriginalPromiseResolves)
+Promise.wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+Promise.waiter = ms => result => Promise.wait(ms).then ( () => result );
 
 })(jQuery);
