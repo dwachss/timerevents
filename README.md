@@ -27,13 +27,13 @@ Rather than
 displaywordcount();
 $('textarea').on('input', displaywordcount);
 ````
-It runs the handler "immediately" in quotes, because it doesn't actually call the handler but puts it on the task queue with a Promise. I could use `[queueMicrotask](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask)` but `Promise.resolve().then(handler)` seems more robust.
+It runs the handler "immediately" in quotes, because it doesn't actually call the handler but puts it on the task queue with a Promise. I could use [`queueMicrotask`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask) but `Promise.resolve().then(handler)` seems more robust.
 
 ### `timeout`
 
 `timeout` event: wrapper for `setTimeout`. Calls the event handler once after a delay. Optional parameter: `duration`, used like jQuery's effects
 `duration`; a number represents the number of milliseconds, and `fast` and `slow` are acceptable.
-Uses `jQuery.speed()`, so if effects are off, the duration is set at zero.
+Uses [`jQuery.speed()`](https://api.jquery.com/jQuery.speed/), so you can use 'fast' or 'slow' as synonyms for 200 and 600.
 
 Examples:
 
@@ -48,7 +48,7 @@ Examples:
 Examples:
 
 	$('span').on('interval', function() { this.innerHTML = Date() }; // shows the time every 400 ms (the default)
-	$('span').on('interval', {duration: 100}, function() { this.innerHTML = Date() }; // shows the time every 100 ms
+	$('span').on('interval', {duration: 'fast'}, function() { this.innerHTML = Date() }; // shows the time every 200 ms
 	$('span').off('interval'); // stops the timer
 	
 ### Promise wrappers for `timeout`
