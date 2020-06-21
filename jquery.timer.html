@@ -26,24 +26,31 @@
 	<input type=button value=Start />
 	<span></span>
 </div>
-
+<div id=promises>
+	Promise wrappers
+	<input type=button name='wait' value='Resolve after duration'>
+	<input type=button name='waiter' value='Do something, then resolve after duration'>
+	<label>Duration: <input class=duration /></label>
+	<span></span>
 <script>
+
+	function appendText(el, text){ return $(el).text($(el).text() + text) }
 
 	$('#interval input[value=Start]').click(function(){
 		duration = $('#interval input.duration').val();
 		if (!isNaN(parseInt(duration))) duration = parseInt(duration); 
 		$('#interval span').on('interval', {duration: duration}, function(){
-			$(this).text($(this).text()+' ping!');
+			appendText (this, ' ping!');
 		});
 	});
 	$('#interval input[value=Stop]').click(function(){
-		$('#interval span').off('interval');
+			$('#interval span').off('interval');
 	});
 	$('#timeout input[value=Start]').click(function(){
 		duration = $('#timeout input.duration').val();
 		if (!isNaN(parseInt(duration))) duration = parseInt(duration); 
 		$('#timeout span').on('timeout', {duration: duration}, function(){
-			$(this).text($(this).text()+ ' ping!');
+			appendText (this, ' ping!');
 		});
 	});
 	$('#timeout input[value=Stop]').click(function(){
@@ -51,8 +58,21 @@
 	});
 	$('#immediate input[value=Start]').click( ()=>{
 		$('#immediate span').on('immediate', function(){
-			$(this).text($(this).text() + ' ping!');
-		}).text($('#immediate span').text() + ' before ping!'); // demonstrates that "immediate" is on the queue, not really immediate.
+			appendText (this, ' ping!');
+		});
+		appendText('#immediate span', ' before ping!'); // demonstrates that "immediate" is on the queue, not really immediate.
+	});
+	$('#promises input[name=wait]').click(function(){
+		duration = $('#promises input.duration').val();
+		if (!isNaN(parseInt(duration))) duration = parseInt(duration); 
+		Promise.wait(duration).then(() => appendText('#promises span', ' ping!'));
+	});
+	$('#promises input[name=waiter]').click(function(){
+		duration = $('#promises input.duration').val();
+		if (!isNaN(parseInt(duration))) duration = parseInt(duration); 
+		Promise.resolve(appendText('#promises span', ' before ping!')).
+			then (Promise.waiter(duration)).
+			then(() => appendText('#promises span', ' ping!'));
 	});
 </script>
 </body>

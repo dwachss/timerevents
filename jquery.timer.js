@@ -36,10 +36,7 @@ $.event.special.immediate = {
 ['timeout', 'interval'].forEach(function(type){
 	$.event.special[type] = {
 		add: function (handleObj) {
-			var self = this;
-			var handler = function(){
-				handleObj.handler.call(self, jQuery.Event(handleObj.type, {data: handleObj.data}));
-			}
+			let handler = handleObj.handler.bind(this, jQuery.Event(handleObj.type, {data: handleObj.data}));			
 			handleObj.timer = window[$.camelCase('set-'+type)] (handler, $.speed(handleObj.data).duration);
 		},
 		remove: function (handleObj) {
@@ -51,7 +48,8 @@ $.event.special.immediate = {
 // timeout wrappers to create Promises.
 // Use as Promise.wait(1000).then(functionToRunAfterASecond)
 // and somePromise.then(Promise.waiter(1000)).then(functionToRunASecondAfterTheOriginalPromiseResolves)
-Promise.wait = ms => new Promise(resolve => setTimeout(resolve, ms));
-Promise.waiter = ms => result => Promise.wait(ms).then ( () => result );
+Promise.wait = ms => new Promise(resolve => setTimeout(resolve, $.speed(ms).duration));
+Promise.waiter = ms => result => Promise.wait(ms).then ( () => result ); 
+
 
 })(jQuery);
